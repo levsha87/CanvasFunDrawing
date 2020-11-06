@@ -7,6 +7,22 @@
     <title>Fun Canvas</title>
 </head>
 <body>
+    <section class="control">
+        <div class='wrapper'>
+            <label for='turnOn'>Off
+            <input id='turnOn' type='range' name='turnOn' min='0' max='1' value='0' data-sizing='px'>
+            On
+        </label>
+        </div>
+        <div class='wrapper'>
+            <label for='sizeLine'>Line thickness:</label>
+            <input id='sizeLine' type='range' name='sizeLine' min='1' max='100' value='10' data-sizing='px'>
+        </div>
+        <div class='wrapper'>
+            <label for='LineColor'>Line color:</label>
+            <input id='LineColor' type='color' name='LineColor' value='#ffc600'>
+        </div>
+    </section>
     <canvas id="myCanvas" ></canvas>
     <script src="/main.js"></script>
 </body>
