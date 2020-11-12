@@ -1,10 +1,11 @@
 const canvas = document.querySelector('#myCanvas'); //get canvas from doc
 const inputs = document.querySelectorAll(".control input");
-const turnOn = document.querySelector('#turnOn');
-console.log(turnOn.value);
+const manualModeOn = document.querySelector('#manualModeOn');
+
+
 const ctx = canvas.getContext('2d'); //create a drawing object
 let color = '#BADA55';
-let size = 1;
+let size = 2;
 canvas.width = window.innerWidth; //get all width not includes scrollWidth
 canvas.height = window.innerHeight - 30; // get all width not includes scrollWidth
 ctx.strokeStyle = color; //set color for strokes when does not set with hsl calculator
@@ -24,12 +25,24 @@ function handleUpdate(e) {
   ctx.lineWidth = this.value;
 }
 
-function draw(e) {
+function defaultValue (){
+  ctx.strokeStyle = color;
+  ctx.lineWidth = size;
+}
+
+function draw (e){
+  if(manualModeOn.checked){
+    drawManualMode(e);
+  } else {
+    drawRainbow(e);
+  } 
+}
+
+function drawRainbow(e) {
   if (!isDrawing) return; // stop the fn from running when they are not moused down
-  console.log(e);
-  if (turnOn.value === '0') {
-    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
-  } //HSL Color Calculator
+  
+  ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+  //HSL Color Calculator
   ctx.beginPath();
   // start from
   ctx.moveTo(lastX, lastY);
@@ -42,18 +55,24 @@ function draw(e) {
   if (hue >= 360) {
     hue = 0;
   }
-  if (turnOn.value === '0'){
-    if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
+  
+  if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
     direction = !direction;
   }
-
-  if(direction) {
+    if(direction) {
     ctx.lineWidth++;
-  } else {
+    } else {
     ctx.lineWidth--;
   }
 }
 
+function drawManualMode(e) {
+  if (!isDrawing) return;
+  ctx.beginPath();
+  ctx.moveTo(lastX, lastY);
+  ctx.lineTo(e.offsetX, e.offsetY);
+  ctx.stroke();
+  [lastX, lastY] = [e.offsetX, e.offsetY];
 }
 
 canvas.addEventListener('mousedown', (e) => {
@@ -65,7 +84,4 @@ inputs.forEach((input) => input.addEventListener("change", handleUpdate));
 canvas.addEventListener('mousemove', draw);
 canvas.addEventListener('mouseup', () => isDrawing = false);
 canvas.addEventListener('mouseout', () => isDrawing = false);
-
-
-
-
+manualModeOn.addEventListener('click', defaultValue);
