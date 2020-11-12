@@ -1,3 +1,4 @@
+function initFunCanvasApp() {
 const canvas = document.querySelector('#myCanvas'); //get canvas from doc
 const inputs = document.querySelectorAll(".control input");
 const manualModeOn = document.querySelector('#manualModeOn');
@@ -85,3 +86,6 @@ canvas.addEventListener('mousemove', draw);
 canvas.addEventListener('mouseup', () => isDrawing = false);
 canvas.addEventListener('mouseout', () => isDrawing = false);
 manualModeOn.addEventListener('click', defaultValue);
+}
+
+initFunCanvasApp();
