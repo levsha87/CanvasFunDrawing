@@ -1,27 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/style.css"  rel="stylesheet" >
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/style.css" rel="stylesheet" />
     <title>Fun Canvas</title>
-</head>
-<body>
+  </head>
+  <body>
     <section class="control">
-        <div class='wrapper manualModeOn'>
-            <label for='manualModeOn'>Rainbow / Manual Mode On</label>
-            <input id='manualModeOn' type='checkbox'>
-        </div>
-        <div class='wrapper'>
-            <label for='sizeLine'>Line thickness:</label>
-            <input id='sizeLine' type='range' name='sizeLine' min='1' max='100' value='2' data-sizing='px'>
-        </div>
-        <div class='wrapper'>
-            <label for='LineColor'>Line color:</label>
-            <input id='LineColor' type='color' name='LineColor' value='#ffc600'>
-        </div>
+      <div class="wrapper manualModeCheckBox">
+        <label for="manualModeCheckBox">Rainbow / Manual Mode On</label>
+        <input id="manualModeCheckBox" type="checkbox" />
+      </div>
+      <div class="wrapper">
+        <label for="lineSize">Line thickness:</label>
+        <input
+          id="lineSize"
+          type="range"
+          name="lineSize"
+          min="1"
+          max="100"
+          value="5"
+          data-sizing="px"
+        />
+      </div>
+      <div class="wrapper">
+        <label for="lineColor">Line color:</label>
+        <input id="lineColor" type="color" name="lineColor" value="#755FE3" />
+      </div>
     </section>
-    <canvas id="myCanvas" ></canvas>
+    <canvas id="myCanvas"></canvas>
     <script src="/main.js"></script>
-</body>
+  </body>
 </html>
