@@ -16,77 +16,77 @@ function initFunCanvasApp() {
   ctx.lineWidth = SIZE;
   ctx.globalCompositeOperation = 'source-over';
 
-  let isDrawing = false;
-  let lastX = 0;
-  let lastY = 0;
-  
-  let hue = 0;
-  let direction = true;
+  const state = {
+    isDrawing: false,
+    lastX : 0,
+    lastY : 0,
+    hue : 0,
+    direction: true
+  };
 
   canvas.addEventListener('mousedown', (e) => {
-    isDrawing = true;
-    [lastX, lastY] = [e.offsetX, e.offsetY];
+    state.isDrawing = true;
+    [state.lastX, state.lastY] = [e.offsetX, e.offsetY];
   });
   
-  inputs.forEach((input) => input.addEventListener('change', handleUpdate));
-  canvas.addEventListener('mousemove', (e) => draw(e, manualModeCheckBox.checked, ctx, isDrawing, hue, direction));
-  canvas.addEventListener('mouseup', () => (isDrawing = false));
-  canvas.addEventListener('mouseout', () => (isDrawing = false));
+  inputs.forEach((input) => input.addEventListener('change', () => handleUpdate(ctx, input)));
+  canvas.addEventListener('mousemove', (e) => draw(e, manualModeCheckBox.checked, ctx, state));
+  canvas.addEventListener('mouseup', () => (state.isDrawing = false));
+  canvas.addEventListener('mouseout', () => (state.isDrawing = false));
   manualModeCheckBox.addEventListener('click', (e) => setDefaultValue(ctx, SIZE, COLOR));
 }
 
-function handleUpdate(ctx) {
-  ctx.strokeStyle = this.value;
-  ctx.lineWidth = this.value;
+function handleUpdate(ctx, input) {
+  console.log(input);
+  ctx.strokeStyle = input.value;
+  ctx.lineWidth = input.value;
 }
 
 function setDefaultValue(ctx, SIZE, COLOR) {
   ctx.strokeStyle = COLOR;
   ctx.lineWidth = SIZE;
-  console.log(ctx.strokeStyle, ctx.lineWidth);
 }
 
-function draw(e, isChecked, ctx, isDrawing, hue, direction, lastX, lastY) {
+function draw(e, isChecked, ctx, state) {
   if (isChecked) {
-    drawManualMode(e, ctx, isDrawing, lastX, lastY);
+    drawManualMode(e, ctx, state);
   } else {
-    drawRainbow(e, ctx, isDrawing, hue, direction, lastX, lastY);
-  }
+    drawRainbow(e, ctx, state);
+}
 }
 
-function drawRainbow(e, ctx, isDrawing, hue, direction, lastX, lastY) {
-  if (!isDrawing) return;
-  ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+function drawRainbow(e, ctx, state) {
+  if (!state.isDrawing) return;
+  ctx.strokeStyle = `hsl(${state.hue}, 100%, 50%)`;
   //HSL Color Calculator
   ctx.beginPath();
   // start from
-  ctx.moveTo(lastX, lastY);
+  ctx.moveTo(state.lastX, state.lastY);
   // go to
   ctx.lineTo(e.offsetX, e.offsetY);
   ctx.stroke();
-  [lastX, lastY] = [e.offsetX, e.offsetY]; //define current x, y
-console.log(hue);
-  hue++;
-  if (hue >= 360) {
-    hue = 0;
+  [state.lastX, state.lastY] = [e.offsetX, e.offsetY]; //define current x, y
+
+  state.hue++;
+  if (state.hue >= 360) {
+    state.hue = 0;
   }
-  console.log(hue);
 
   if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
-    direction = !direction;
+    state.direction = !state.direction;
   }
-  if (direction) {
+  if (state.direction) {
     ctx.lineWidth++;
   } else {
     ctx.lineWidth--;
   }
 }
 
-function drawManualMode(e, ctx, isDrawing, lastX, lastY) {
-  if (!isDrawing) return;
+function drawManualMode(e, ctx, state) {
+  if (!state.isDrawing) return;
   ctx.beginPath();
-  ctx.moveTo(lastX, lastY);
+  ctx.moveTo(state.lastX, state.lastY);
   ctx.lineTo(e.offsetX, e.offsetY);
   ctx.stroke();
-  [lastX, lastY] = [e.offsetX, e.offsetY];
+  [state.lastX, state.lastY] = [e.offsetX, e.offsetY];
 }
