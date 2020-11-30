@@ -18,26 +18,31 @@ function initFunCanvasApp() {
 
   const state = {
     isDrawing: false,
-    lastX : 0,
-    lastY : 0,
-    hue : 0,
-    direction: true
+    lastX: 0,
+    lastY: 0,
+    hue: 0,
+    direction: true,
   };
 
   canvas.addEventListener('mousedown', (e) => {
     state.isDrawing = true;
     [state.lastX, state.lastY] = [e.offsetX, e.offsetY];
   });
-  
-  inputs.forEach((input) => input.addEventListener('change', () => handleUpdate(ctx, input)));
-  canvas.addEventListener('mousemove', (e) => draw(e, manualModeCheckBox.checked, ctx, state));
+
+  inputs.forEach((input) =>
+    input.addEventListener('change', () => handleUpdate(ctx, input))
+  );
+  canvas.addEventListener('mousemove', (e) =>
+    draw(e, manualModeCheckBox.checked, ctx, state)
+  );
   canvas.addEventListener('mouseup', () => (state.isDrawing = false));
   canvas.addEventListener('mouseout', () => (state.isDrawing = false));
-  manualModeCheckBox.addEventListener('click', (e) => setDefaultValue(ctx, SIZE, COLOR));
+  manualModeCheckBox.addEventListener('click', (e) =>
+    setDefaultValue(ctx, SIZE, COLOR)
+  );
 }
 
 function handleUpdate(ctx, input) {
-  console.log(input);
   ctx.strokeStyle = input.value;
   ctx.lineWidth = input.value;
 }
@@ -52,17 +57,14 @@ function draw(e, isChecked, ctx, state) {
     drawManualMode(e, ctx, state);
   } else {
     drawRainbow(e, ctx, state);
-}
+  }
 }
 
 function drawRainbow(e, ctx, state) {
   if (!state.isDrawing) return;
   ctx.strokeStyle = `hsl(${state.hue}, 100%, 50%)`;
-  //HSL Color Calculator
   ctx.beginPath();
-  // start from
   ctx.moveTo(state.lastX, state.lastY);
-  // go to
   ctx.lineTo(e.offsetX, e.offsetY);
   ctx.stroke();
   [state.lastX, state.lastY] = [e.offsetX, e.offsetY]; //define current x, y
@@ -75,6 +77,7 @@ function drawRainbow(e, ctx, state) {
   if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
     state.direction = !state.direction;
   }
+
   if (state.direction) {
     ctx.lineWidth++;
   } else {
