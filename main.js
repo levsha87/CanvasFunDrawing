@@ -3,17 +3,18 @@ initFunCanvasApp();
 function initFunCanvasApp() {
   const canvas = document.querySelector('#myCanvas');
   const inputs = document.querySelectorAll('.control input');
+  const controlPanel = document.querySelector('.control');
   const manualModeCheckBox = document.querySelector('#manualModeCheckBox');
   const ctx = canvas.getContext('2d');
-  const COLOR = document.querySelector('#lineColor').value;
-  const SIZE = document.querySelector('#lineSize').value;
+  const color = document.querySelector('#lineColor').value;
+  const size = document.querySelector('#lineSize').value;
 
   canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight - 40;
-  ctx.strokeStyle = COLOR;
+  canvas.height = window.innerHeight - controlPanel.clientHeight;
+  ctx.strokeStyle = color;
   ctx.lineJoin = 'round';
   ctx.lineCap = 'round';
-  ctx.lineWidth = SIZE;
+  ctx.lineWidth = size;
   ctx.globalCompositeOperation = 'source-over';
 
   const state = {
@@ -29,27 +30,33 @@ function initFunCanvasApp() {
     [state.lastX, state.lastY] = [e.offsetX, e.offsetY];
   });
 
-  inputs.forEach((input) =>
-    input.addEventListener('change', () => handleUpdate(ctx, input))
-  );
+  controlPanel.addEventListener('change', (e) => {
+    let value = e.target.closest('input').value;
+
+    if (e.target !== e.target.closest('input')) return;
+    handleUpdate(ctx, value);
+  });
+
   canvas.addEventListener('mousemove', (e) =>
     draw(e, manualModeCheckBox.checked, ctx, state)
   );
-  canvas.addEventListener('mouseup', () => (state.isDrawing = false));
-  canvas.addEventListener('mouseout', () => (state.isDrawing = false));
+
+  canvas.addEventListener('mouseup', () => (state.isDrawing = false) );
+  canvas.addEventListener('mouseout', () => (state.isDrawing = false) );
+
   manualModeCheckBox.addEventListener('click', (e) =>
-    setDefaultValue(ctx, SIZE, COLOR)
+    setDefaultValue(ctx, size, color)
   );
 }
 
-function handleUpdate(ctx, input) {
-  ctx.strokeStyle = input.value;
-  ctx.lineWidth = input.value;
+function handleUpdate(ctx, value) {
+  ctx.strokeStyle = value;
+  ctx.lineWidth = value;
 }
 
-function setDefaultValue(ctx, SIZE, COLOR) {
-  ctx.strokeStyle = COLOR;
-  ctx.lineWidth = SIZE;
+function setDefaultValue(ctx, size, color) {
+  ctx.strokeStyle = color;
+  ctx.lineWidth = size;
 }
 
 function draw(e, isChecked, ctx, state) {
