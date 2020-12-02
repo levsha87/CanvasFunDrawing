@@ -6,15 +6,15 @@ function initFunCanvasApp() {
   const controlPanel = document.querySelector('.control');
   const manualModeCheckBox = document.querySelector('#manualModeCheckBox');
   const ctx = canvas.getContext('2d');
-  const color = document.querySelector('#lineColor').value;
-  const size = document.querySelector('#lineSize').value;
+  const COLOR_DEFAULT = document.querySelector('#lineColor').value;
+  const SIZE_DEFAULT = document.querySelector('#lineSize').value;
 
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight - controlPanel.clientHeight;
-  ctx.strokeStyle = color;
+  ctx.strokeStyle = COLOR_DEFAULT;
   ctx.lineJoin = 'round';
   ctx.lineCap = 'round';
-  ctx.lineWidth = size;
+  ctx.lineWidth = SIZE_DEFAULT;
   ctx.globalCompositeOperation = 'source-over';
 
   const state = {
@@ -45,7 +45,7 @@ function initFunCanvasApp() {
   canvas.addEventListener('mouseout', () => (state.isDrawing = false) );
 
   manualModeCheckBox.addEventListener('click', (e) =>
-    setDefaultValue(ctx, size, color)
+    setDefaultValue(ctx, SIZE_DEFAULT, COLOR_DEFAULT)
   );
 }
 
@@ -54,9 +54,9 @@ function handleUpdate(ctx, value) {
   ctx.lineWidth = value;
 }
 
-function setDefaultValue(ctx, size, color) {
-  ctx.strokeStyle = color;
-  ctx.lineWidth = size;
+function setDefaultValue(ctx, SIZE_DEFAULT, COLOR_DEFAULT) {
+  ctx.strokeStyle = COLOR_DEFAULT;
+  ctx.lineWidth = SIZE_DEFAULT;
 }
 
 function draw(e, isChecked, ctx, state) {
